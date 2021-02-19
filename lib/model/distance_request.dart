@@ -15,7 +15,7 @@ class DistanceRequest {
   int gap;
 
   DistanceRequest(
-      {@required this.sid,
+      {this.sid,
       @required this.tid,
       @required this.startTime,
       @required this.endTime,

@@ -22,6 +22,13 @@ class AmapTrack {
 
   TrackCallBack _trackCallBack;
 
+  int sid;
+
+  Future setServiceId(int serviceId) async {
+    assert(null != serviceId && serviceId > 0);
+    sid = serviceId;
+  }
+
   /// 监听回调
   Future addCallback(TrackCallBack callBack) async {
     _methodChannel.setMethodCallHandler((call) async {
@@ -62,7 +69,7 @@ class AmapTrack {
         .invokeMethod('setLocationMode', {'locationMode': locationMode});
   }
 
-  /// 设置定位模式。默认为高精度定位模式 高精度定位模式
+  /// 自定义属性
   Future addOnCustomAttributeListener() async {
     // todo
     await _methodChannel.invokeMethod('addOnCustomAttributeListener');
@@ -88,7 +95,9 @@ class AmapTrack {
 
   /// 开启轨迹服务 在开启轨迹服务前，需要初始化Track，并在AndroidManifest.xml文件中配置API_KEY(AK)
   Future startTrack(TrackParam param) async {
-    assert(null != param && param.isTerminalValid() && param.isServiceValid());
+    assert(null != param);
+    if (null == param.sid) param.sid = sid;
+    assert(param.isTerminalValid() && param.isServiceValid());
     await _methodChannel.invokeMethod('startTrack', {'param': param.toMap()});
     await addOnTrackListener();
   }
@@ -113,7 +122,9 @@ class AmapTrack {
   /// 停止轨迹服务
   /// TrackParam - 和开启时传入的track参数一致
   Future stopTrack(TrackParam param) async {
-    assert(null != param && param.isTerminalValid() && param.isServiceValid());
+    assert(null != param);
+    if (null == param.sid) param.sid = sid;
+    assert(param.isTerminalValid() && param.isServiceValid());
     await _methodChannel.invokeMethod('stopTrack', {'param': param.toMap()});
     await addOnTrackListener();
   }
@@ -121,6 +132,7 @@ class AmapTrack {
   /// 查询terminal
   Future queryTerminal(QueryTerminalRequest request) async {
     assert(null != request);
+    if (null == request.sid) request.sid = sid;
     await _methodChannel
         .invokeMethod('queryTerminal', {'request': request.toMap()});
   }
@@ -128,6 +140,7 @@ class AmapTrack {
   /// 创建terminal
   Future addTerminal(AddTerminalRequest request) async {
     assert(null != request);
+    if (null == request.sid) request.sid = sid;
     await _methodChannel
         .invokeMethod('addTerminal', {'request': request.toMap()});
   }
@@ -143,6 +156,7 @@ class AmapTrack {
   /// gap - 距离补偿生效的点间距，单位为米，范围必须在50m~10km，当两点间距离超过该值时，将启用距离补偿计算两点 间距离
   Future queryDistance(DistanceRequest request) async {
     assert(null != request);
+    if (null == request.sid) request.sid = sid;
     await _methodChannel
         .invokeMethod('queryDistance', {'request': request.toMap()});
   }
@@ -150,6 +164,7 @@ class AmapTrack {
   /// 查询最新轨迹点
   Future queryLatestPoint(LatestPointRequest request) async {
     assert(null != request);
+    if (null == request.sid) request.sid = sid;
     await _methodChannel
         .invokeMethod('queryLatestPoint', {'request': request.toMap()});
   }
@@ -157,6 +172,7 @@ class AmapTrack {
   /// 查询历史轨迹
   Future queryHistoryTrack(HistoryTrackRequest request) async {
     assert(null != request);
+    if (null == request.sid) request.sid = sid;
     await _methodChannel
         .invokeMethod('queryHistoryTrack', {'request': request.toMap()});
   }
@@ -164,6 +180,7 @@ class AmapTrack {
   /// 查询终端下的轨迹
   Future queryTerminalTrack(QueryTrackRequest request) async {
     assert(null != request);
+    if (null == request.sid) request.sid = sid;
     await _methodChannel
         .invokeMethod('queryHistoryTrack', {'request': request.toMap()});
   }
@@ -171,6 +188,7 @@ class AmapTrack {
   /// 增加轨迹
   Future addTrack(AddTrackRequest request) async {
     assert(null != request);
+    if (null == request.sid) request.sid = sid;
     await _methodChannel.invokeMethod('addTrack', {'request': request.toMap()});
   }
 }

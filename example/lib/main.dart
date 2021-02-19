@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_amap_track/flutter_amap_track.dart';
+import 'package:flutter_amap_track/model/location_mode.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String platformVersion = '';
+    AmapTrack.getInstance().setLocationMode(LocationMode.DEVICE_SENSORS);
     // Platform messages may fail, so we use a try/catch PlatformException.
 
     // If the widget was removed from the tree while the asynchronous platform

@@ -1,8 +1,7 @@
 name: flutter_amap_track
 description: A new Flutter plugin for AMap Track Service.
 version: 0.0.1
-author: DoggieX
-homepage: github.com:ColdPuppy/flutter_amap_track.git
+homepage: https://github.com/ColdPuppy/flutter_amap_track
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

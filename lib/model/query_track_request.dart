@@ -21,7 +21,7 @@ class QueryTrackRequest {
   int pageSize;
 
   QueryTrackRequest(
-      {@required this.sid,
+      {this.sid,
       @required this.tid,
       @required this.startTime,
       @required this.endTime,

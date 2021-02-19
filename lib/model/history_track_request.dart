@@ -18,7 +18,7 @@ class HistoryTrackRequest {
   String accuracy;
 
   HistoryTrackRequest(
-      {@required this.sid,
+      {this.sid,
       @required this.tid,
       @required this.startTime,
       @required this.endTime,

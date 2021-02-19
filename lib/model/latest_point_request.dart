@@ -12,7 +12,7 @@ class LatestPointRequest {
   String accuracy;
 
   LatestPointRequest(
-      {@required this.sid,
+      {this.sid,
       @required this.tid,
       this.trid,
       this.correction,
