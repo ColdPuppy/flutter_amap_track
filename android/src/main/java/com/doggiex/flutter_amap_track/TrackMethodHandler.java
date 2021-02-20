@@ -182,62 +182,109 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
             final Map<String, Object> params = new HashMap<>();
             onTrackListener = new OnTrackListener() {
                 @Override
-                public void onQueryTerminalCallback(QueryTerminalResponse queryTerminalResponse) {
-                    params.put("tid", queryTerminalResponse.getTid());
-                    params.put("isTerminalExist", queryTerminalResponse.isTerminalExist());
-                    methodChannel.invokeMethod(className + "#onQueryTerminalCallback", params);
-                }
-
-                @Override
-                public void onCreateTerminalCallback(AddTerminalResponse addTerminalResponse) {
-                    params.put("tid", addTerminalResponse.getTid());
-                    params.put("isServiceNonExist", addTerminalResponse.isServiceNonExist());
-                    methodChannel.invokeMethod(className + "#onCreateTerminalCallback", params);
-                }
-
-                @Override
-                public void onDistanceCallback(DistanceResponse distanceResponse) {
-                    params.put("distance", distanceResponse.getDistance());
-                    methodChannel.invokeMethod(className + "#onDistanceCallback", params);
-                }
-
-                @Override
-                public void onLatestPointCallback(LatestPointResponse latestPointResponse) {
-                    params.put("latestPoint", latestPointResponse.getLatestPoint().getPoint());
-                    methodChannel.invokeMethod(className + "#onLatestPointCallback", params);
-                }
-
-                @Override
-                public void onHistoryTrackCallback(HistoryTrackResponse historyTrackResponse) {
-                    params.put("historyTrack", ConvertHelper.convertHistoryTrack(historyTrackResponse.getHistoryTrack()));
-                    methodChannel.invokeMethod(className + "#onHistoryTrackCallback", params);
-                }
-
-                @Override
-                public void onQueryTrackCallback(QueryTrackResponse queryTrackResponse) {
-                    params.put("count", queryTrackResponse.getCount());
-                    List<Map<String, Object>> tracks = new ArrayList<>();
-                    for (Track track : queryTrackResponse.getTracks()) {
-                        tracks.add(ConvertHelper.convertTrack(track));
+                public void onQueryTerminalCallback(QueryTerminalResponse response) {
+                    if (response.isSuccess()) {
+                        params.put("tid", response.getTid());
+                        params.put("isTerminalExist", response.isTerminalExist());
+                        methodChannel.invokeMethod(className + "#onQueryTerminalCallback", params);
+                    } else {
+                        params.put("errorCode", response.getErrorCode());
+                        params.put("errorMsg", response.getErrorMsg());
+                        params.put("errorDetail", response.getErrorDetail());
+                        methodChannel.invokeMethod(className + "#onQueryTerminalCallback#error", params);
                     }
-                    params.put("tracks", tracks);
-                    methodChannel.invokeMethod(className + "#onQueryTrackCallback", params);
                 }
 
                 @Override
-                public void onAddTrackCallback(AddTrackResponse addTrackResponse) {
-                    params.put("trid", addTrackResponse.getTrid());
-                    methodChannel.invokeMethod(className + "#onAddTrackCallback", params);
+                public void onCreateTerminalCallback(AddTerminalResponse response) {
+                    if (response.isSuccess()) {
+                        params.put("tid", response.getTid());
+                        params.put("isServiceNonExist", response.isServiceNonExist());
+                        methodChannel.invokeMethod(className + "#onCreateTerminalCallback", params);
+                    } else {
+                        params.put("errorCode", response.getErrorCode());
+                        params.put("errorMsg", response.getErrorMsg());
+                        params.put("errorDetail", response.getErrorDetail());
+                        methodChannel.invokeMethod(className + "#onCreateTerminalCallback#error", params);
+                    }
+                }
+
+                @Override
+                public void onDistanceCallback(DistanceResponse response) {
+                    if (response.isSuccess()) {
+                        params.put("distance", response.getDistance());
+                        methodChannel.invokeMethod(className + "#onDistanceCallback", params);
+                    } else {
+                        params.put("errorCode", response.getErrorCode());
+                        params.put("errorMsg", response.getErrorMsg());
+                        params.put("errorDetail", response.getErrorDetail());
+                        methodChannel.invokeMethod(className + "#onDistanceCallback#error", params);
+                    }
+                }
+
+                @Override
+                public void onLatestPointCallback(LatestPointResponse response) {
+                    if (response.isSuccess()) {
+                        params.put("latestPoint", ConvertHelper.convertPoint(response.getLatestPoint().getPoint()));
+                        methodChannel.invokeMethod(className + "#onLatestPointCallback", params);
+                    } else {
+                        params.put("errorCode", response.getErrorCode());
+                        params.put("errorMsg", response.getErrorMsg());
+                        params.put("errorDetail", response.getErrorDetail());
+                        methodChannel.invokeMethod(className + "#onLatestPointCallback#error", params);
+                    }
+                }
+
+                @Override
+                public void onHistoryTrackCallback(HistoryTrackResponse response) {
+                    if (response.isSuccess()) {
+                        params.put("historyTrack", ConvertHelper.convertHistoryTrack(response.getHistoryTrack()));
+                        methodChannel.invokeMethod(className + "#onHistoryTrackCallback", params);
+                    } else {
+                        params.put("errorCode", response.getErrorCode());
+                        params.put("errorMsg", response.getErrorMsg());
+                        params.put("errorDetail", response.getErrorDetail());
+                        methodChannel.invokeMethod(className + "#onHistoryTrackCallback#error", params);
+                    }
+                }
+
+                @Override
+                public void onQueryTrackCallback(QueryTrackResponse response) {
+                    if (response.isSuccess()) {
+                        params.put("count", response.getCount());
+                        List<Map<String, Object>> tracks = new ArrayList<>();
+                        for (Track track : response.getTracks()) {
+                            tracks.add(ConvertHelper.convertTrack(track));
+                        }
+                        params.put("tracks", tracks);
+                        methodChannel.invokeMethod(className + "#onQueryTrackCallback", params);
+                    } else {
+                        params.put("errorCode", response.getErrorCode());
+                        params.put("errorMsg", response.getErrorMsg());
+                        params.put("errorDetail", response.getErrorDetail());
+                        methodChannel.invokeMethod(className + "#onQueryTrackCallback#error", params);
+                    }
+                }
+
+                @Override
+                public void onAddTrackCallback(AddTrackResponse response) {
+                    if (response.isSuccess()) {
+                        params.put("trid", response.getTrid());
+                        methodChannel.invokeMethod(className + "#onAddTrackCallback", params);
+                    } else {
+                        params.put("errorCode", response.getErrorCode());
+                        params.put("errorMsg", response.getErrorMsg());
+                        params.put("errorDetail", response.getErrorDetail());
+                        methodChannel.invokeMethod(className + "#onAddTrackCallback#error", params);
+                    }
                 }
 
                 @Override
                 public void onParamErrorCallback(ParamErrorResponse paramErrorResponse) {
                     params.put("errorCode", paramErrorResponse.getErrorCode());
                     params.put("errorMsg", paramErrorResponse.getErrorMsg());
-                    params.put("isSuccess", paramErrorResponse.isSuccess());
                     params.put("errorDetail", paramErrorResponse.getErrorDetail());
-                    params.put("data", paramErrorResponse.getData());
-                    methodChannel.invokeMethod(className + "#onParamErrorCallback", params);
+                    methodChannel.invokeMethod(className + "#onParamErrorCallback#error", params);
                 }
             };
         }
@@ -248,7 +295,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
         Map<String, Integer> param = call.argument("param");
         if (null != param) {
             TrackParam trackParam = ParseHelper.parseTrackParam(param);
-            aMapTrackClient.startTrack(trackParam, getOnTrackLifecycleListener());
+            aMapTrackClient.stopTrack(trackParam, getOnTrackLifecycleListener());
         } else {
             paramError(result);
         }

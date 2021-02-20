@@ -102,8 +102,10 @@ public class ParseHelper {
         String accuracy = (String) map.get("accuracy");
         HistoryTrackRequest request = null;
         if (null != sid && null != tid && null != startTime && null != endTime) {
-            if (null != order && correction != null && null != recoup && null != gap && null != page && null != pageSize && null != accuracy)
+            if (null != order && correction != null && null != recoup && null != gap && null != page && null != pageSize)
                 request = new HistoryTrackRequest(sid, tid, startTime, endTime, correction, recoup, gap, order, page, pageSize, accuracy);
+            else
+                request = new HistoryTrackRequest(sid,tid,startTime,endTime);
         }
         return request;
     }

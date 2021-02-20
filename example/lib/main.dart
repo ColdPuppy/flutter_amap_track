@@ -3,53 +3,22 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_amap_track/flutter_amap_track.dart';
-import 'package:flutter_amap_track/model/location_mode.dart';
+import 'package:flutter_amap_track_example/home_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  AmapTrack.getInstance().setServiceId(25337);
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion = '';
-    AmapTrack.getInstance().setLocationMode(LocationMode.DEVICE_SENSORS);
-    // Platform messages may fail, so we use a try/catch PlatformException.
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
-      ),
+      home: HomePage(),
+      routes: {
+        'home': (_) => HomePage(),
+      },
     );
   }
 }
