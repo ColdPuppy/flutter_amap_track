@@ -4,8 +4,6 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_amap_track/core/track_callback.dart';
-import 'package:flutter_amap_track/core/track_callback.dart';
 import 'package:flutter_amap_track/model/request/add_terminal_request.dart';
 import 'package:flutter_amap_track/model/request/add_track_request.dart';
 import 'package:flutter_amap_track/model/request/distance_request.dart';

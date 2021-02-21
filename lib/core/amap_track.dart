@@ -158,19 +158,6 @@ class AmapTrack {
     sid = serviceId;
   }
 
-  /// 监听回调
-  // Future addCallback(TrackCallBack callBack) async {
-  //   _methodChannel.setMethodCallHandler((call) async {
-  //     var split = call.method.split('#');
-  //     if (split.length > 1)
-  //       switch (split[0]) {
-  //         case 'onQueryTerminalCallback':
-  //           _queryTerminalCompleter.complete(call.arguments);
-  //           break;
-  //       }
-  //   });
-  // }
-
   /// 获得版本号
   Future<String> getVersion() async {
     return await _methodChannel.invokeMethod('getVersion');
