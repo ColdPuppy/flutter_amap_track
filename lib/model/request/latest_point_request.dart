@@ -18,6 +18,11 @@ class LatestPointRequest {
       this.correction,
       this.accuracy});
 
-  Map<String, dynamic> toMap() =>
-      {'sid': sid, 'tid': tid, 'correction': correction, 'accuracy': accuracy};
+  Map<String, dynamic> toMap() => {
+        'sid': sid,
+        'tid': tid,
+        'trid': trid,
+        'correction': correction,
+        'accuracy': accuracy
+      };
 }

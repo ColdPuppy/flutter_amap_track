@@ -8,7 +8,11 @@ class QueryTerminalRequest {
   int sid;
   String terminal;
 
-  QueryTerminalRequest({this.sid, @required this.terminal});
+  /// iOS only
+  int terminalId;
 
-  Map<String, dynamic> toMap() => {'sid': sid, 'terminal': terminal};
+  QueryTerminalRequest({this.sid, @required this.terminal, this.terminalId});
+
+  Map<String, dynamic> toMap() =>
+      {'sid': sid, 'terminal': terminal, 'terminalId': terminalId};
 }

@@ -24,7 +24,7 @@ class HistoryTrackRequest {
       @required this.endTime,
       this.correction,
       this.recoup,
-      this.gap,
+      this.gap = 5000,
       this.order,
       this.page,
       this.pageSize,

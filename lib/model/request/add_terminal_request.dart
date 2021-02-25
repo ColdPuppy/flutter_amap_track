@@ -8,7 +8,11 @@ class AddTerminalRequest {
   int sid;
   String terminal;
 
-  AddTerminalRequest({this.sid, @required this.terminal});
+  /// iOS only
+  String terminalDesc;
 
-  Map<String, dynamic> toMap() => {'sid': sid, 'terminal': terminal};
+  AddTerminalRequest({this.sid, @required this.terminal, this.terminalDesc});
+
+  Map<String, dynamic> toMap() =>
+      {'sid': sid, 'terminal': terminal, 'terminalDesc': terminalDesc};
 }

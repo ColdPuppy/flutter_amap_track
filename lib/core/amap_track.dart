@@ -151,15 +151,24 @@ class AmapTrack {
     });
   }
 
+  /// 设置ApiKey  仅iOS有效
+  setIOSApiKey(String apiKey) {
+    assert(Platform.isIOS);
+    _methodChannel.invokeListMethod('setIOSApiKey', {'apiKey': apiKey});
+  }
+
   int sid;
 
   Future setServiceId(int serviceId) async {
     assert(null != serviceId && serviceId > 0);
     sid = serviceId;
+    if (Platform.isIOS)
+      _methodChannel.invokeListMethod('setServiceId', {'sid': serviceId});
   }
 
   /// 获得版本号
   Future<String> getVersion() async {
+    assert(Platform.isAndroid);
     return await _methodChannel.invokeMethod('getVersion');
   }
 
@@ -183,8 +192,22 @@ class AmapTrack {
         {'gatherInterval': gatherInterval, 'packInterval': packInterval});
   }
 
+  /// 设置定位定位属性
+  Future setIOSOption(
+      {bool allowsBackgroundLocationUpdates = true,
+      bool pausesLocationUpdatesAutomatically = false,
+      int activityType = IosClActivityType.AUTOMOTIVE_NAVIGATION}) async {
+    assert(Platform.isIOS);
+    await _methodChannel.invokeMethod('setIOSOption', {
+      'allowsBackgroundLocationUpdates': allowsBackgroundLocationUpdates,
+      'pausesLocationUpdatesAutomatically': pausesLocationUpdatesAutomatically,
+      'activityType': activityType
+    });
+  }
+
   /// 设置定位模式。默认为高精度定位模式 高精度定位模式
   Future setLocationMode(int locationMode) async {
+    assert(Platform.isAndroid);
     assert(locationMode < 4 && locationMode > 0);
     await _methodChannel
         .invokeMethod('setLocationMode', {'locationMode': locationMode});
@@ -203,6 +226,7 @@ class AmapTrack {
 
   /// 设置轨迹服务监听器 该接口必须在开启轨迹服务后调用才会生效
   Future setProtocolType(int protocolType) async {
+    assert(Platform.isAndroid);
     assert(0 == protocolType || 1 == protocolType);
     await _methodChannel
         .invokeMethod('setProtocolType', {'protocolType': protocolType});
@@ -356,5 +380,24 @@ class AmapTrack {
     _addTrackCompleter = Completer();
     _methodChannel.invokeMethod('addTrack', {'request': request.toMap()});
     return _addTrackCompleter.future;
+  }
+
+  // todo response
+  Completer<AddTrackResponse> _deleteTrackCompleter;
+
+  /// 删除轨迹
+  /// iOS only
+  Future<AddTrackResponse> deleteTrack(DeleteTrackRequest request) async {
+    assert(Platform.isIOS);
+    assert(null != request);
+    _deleteTrackCompleter = Completer();
+    _methodChannel.invokeMethod('deleteTrack', {'request': request.toMap()});
+    return _deleteTrackCompleter.future;
+  }
+
+  /// 取消所有未回调的请求
+  /// ios only
+  Future cancelAllRequests() async {
+    await _methodChannel.invokeListMethod('cancelAllRequests');
   }
 }

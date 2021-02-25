@@ -22,7 +22,7 @@ class DistanceRequest {
       @required this.trid,
       this.correction,
       this.recoup,
-      this.gap});
+      this.gap = 5000});
 
   Map<String, dynamic> toMap() => {
         'sid': sid,
