@@ -8,8 +8,12 @@ class AddTerminalResponse {
   int tid;
   bool isServiceNonExist;
 
-  AddTerminalResponse(this.tid, this.isServiceNonExist);
+  /// iOS only
+  String terminalName;
+
+  AddTerminalResponse(this.tid, this.isServiceNonExist, this.terminalName);
 
   factory AddTerminalResponse.parse(Map<String, dynamic> map) =>
-      AddTerminalResponse(map['tid'], map['isServiceNonExist']);
+      AddTerminalResponse(
+          map['tid'], map['isServiceNonExist'], map['terminalName']);
 }

@@ -50,10 +50,13 @@ class _TerminalPageState extends State<TerminalPage> {
                         var response = await AmapTrack.getInstance()
                             .queryTerminal(QueryTerminalRequest(
                                 terminal: _controller.text));
-                        setState(() {
-                          consoles.add(
-                              'tid:${response.tid} | isTerminalExist:${response.isTerminalExist}');
-                        });
+                        if (response.length > 0)
+                          setState(() {
+                            consoles.add(
+                                'tid:${response[0].tid} | isTerminalExist:${response[0].isTerminalExist}');
+                          });
+                        else
+                          consoles.add('no result');
                       } on ErrorResponse catch (e) {
                         setState(() {
                           consoles.add(

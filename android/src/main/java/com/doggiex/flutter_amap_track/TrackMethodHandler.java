@@ -119,7 +119,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void addTrack(MethodCall call) {
-        Map<String, Object> request = call.argument("request");
+        Map<String, Object> request = (Map<String, Object>) call.arguments;
         if (null != request) {
             AddTrackRequest req = ParseHelper.parseAddTrackRequest(request);
             aMapTrackClient.addTrack(req, getOnTrackListener());
@@ -127,7 +127,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void queryTerminalTrack(MethodCall call) {
-        Map<String, Object> request = call.argument("request");
+        Map<String, Object> request = (Map<String, Object>) call.arguments;
         if (null != request) {
             QueryTrackRequest req = ParseHelper.parseQueryTrackRequest(request);
             aMapTrackClient.queryTerminalTrack(req, getOnTrackListener());
@@ -135,7 +135,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void queryHistoryTrack(MethodCall call) {
-        Map<String, Object> request = call.argument("request");
+        Map<String, Object> request = (Map<String, Object>) call.arguments;
         if (null != request) {
             HistoryTrackRequest req = ParseHelper.parseHistoryTrackRequest(request);
             aMapTrackClient.queryHistoryTrack(req, getOnTrackListener());
@@ -143,7 +143,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void queryLatestPoint(MethodCall call) {
-        Map<String, Object> request = call.argument("request");
+        Map<String, Object> request = (Map<String, Object>) call.arguments;
         if (null != request) {
             LatestPointRequest req = ParseHelper.parseLatestPointRequest(request);
             aMapTrackClient.queryLatestPoint(req, getOnTrackListener());
@@ -151,7 +151,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void queryDistance(MethodCall call) {
-        Map<String, Object> request = call.argument("request");
+        Map<String, Object> request = (Map<String, Object>) call.arguments;
         if (null != request) {
             DistanceRequest req = ParseHelper.parseDistanceRequest(request);
             aMapTrackClient.queryDistance(req, getOnTrackListener());
@@ -159,7 +159,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void addTerminal(MethodCall call) {
-        Map<String, Object> request = call.argument("request");
+        Map<String, Object> request = (Map<String, Object>) call.arguments;
         if (null != request) {
             AddTerminalRequest req = ParseHelper.parseAddTerminalRequest(request);
             aMapTrackClient.addTerminal(req, getOnTrackListener());
@@ -167,7 +167,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void queryTerminal(MethodCall call) {
-        Map<String, Object> request = call.argument("request");
+        Map<String, Object> request = (Map<String, Object>) call.arguments;
         if (null != request) {
             QueryTerminalRequest req = ParseHelper.parseQueryTerminalRequest(request);
             aMapTrackClient.queryTerminal(req, getOnTrackListener());
@@ -184,9 +184,12 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
                 @Override
                 public void onQueryTerminalCallback(QueryTerminalResponse response) {
                     if (response.isSuccess()) {
-                        params.put("tid", response.getTid());
-                        params.put("isTerminalExist", response.isTerminalExist());
-                        methodChannel.invokeMethod(className + "#onQueryTerminalCallback", params);
+                        List<Map<String,Object>> ts = new ArrayList<>();
+                        Map<String, Object> p = new HashMap<>();
+                        p.put("tid", response.getTid());
+                        p.put("isTerminalExist", response.isTerminalExist());
+                        ts.add(p);
+                        methodChannel.invokeMethod(className + "#onQueryTerminalCallback", ts);
                     } else {
                         params.put("errorCode", response.getErrorCode());
                         params.put("errorMsg", response.getErrorMsg());
@@ -292,7 +295,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void stopTrack(MethodCall call, MethodChannel.Result result) {
-        Map<String, Integer> param = call.argument("param");
+        Map<String, Integer> param = (Map<String, Integer>) call.arguments;
         if (null != param) {
             TrackParam trackParam = ParseHelper.parseTrackParam(param);
             aMapTrackClient.stopTrack(trackParam, getOnTrackLifecycleListener());
@@ -316,7 +319,7 @@ public class TrackMethodHandler implements MethodChannel.MethodCallHandler {
     }
 
     private void startTrack(MethodCall call, MethodChannel.Result result) {
-        Map<String, Integer> param = call.argument("param");
+        Map<String, Integer> param = (Map<String, Integer>) call.arguments;
         if (null != param) {
             TrackParam trackParam = ParseHelper.parseTrackParam(param);
             aMapTrackClient.startTrack(trackParam, getOnTrackLifecycleListener());

@@ -20,9 +20,12 @@ class AmapTrack {
           switch (split[1]) {
             case 'onQueryTerminalCallback':
               if (split.length == 2) {
-                var queryTerminalResponse = QueryTerminalResponse.parse(
-                    Map<String, dynamic>.from(call.arguments));
-                _queryTerminalCompleter?.complete(queryTerminalResponse);
+                var list = call.arguments
+                    .map<QueryTerminalResponse>((l) =>
+                        QueryTerminalResponse.parse(
+                            Map<String, dynamic>.from(l)))
+                    .toList();
+                _queryTerminalCompleter?.complete(list);
               } else {
                 var errorResponse = ErrorResponse.parse(
                     Map<String, dynamic>.from(call.arguments));
@@ -99,6 +102,15 @@ class AmapTrack {
                 _addTrackCompleter?.completeError(errorResponse);
               }
               break;
+            case 'onDeleteTrackDone':
+              if (split.length == 2) {
+                _deleteTrackCompleter?.complete();
+              } else {
+                var errorResponse = ErrorResponse.parse(
+                    Map<String, dynamic>.from(call.arguments));
+                _deleteTrackCompleter?.completeError(errorResponse);
+              }
+              break;
             case 'onParamErrorCallback':
               var errorResponse = ErrorResponse.parse(
                   Map<String, dynamic>.from(call.arguments));
@@ -121,6 +133,21 @@ class AmapTrack {
                 _queryTrackCompleter.completeError(errorResponse);
               if (null != _addTrackCompleter && !_addTrackCompleter.isCompleted)
                 _addTrackCompleter.completeError(errorResponse);
+              if (null != _deleteTrackCompleter &&
+                  !_deleteTrackCompleter.isCompleted)
+                _deleteTrackCompleter.completeError(errorResponse);
+              if (null != _startTrackCompleter &&
+                  !_startTrackCompleter.isCompleted)
+                _startTrackCompleter.completeError(errorResponse);
+              if (null != _startGatherCompleter &&
+                  !_startGatherCompleter.isCompleted)
+                _startGatherCompleter.completeError(errorResponse);
+              if (null != _stopGatherCompleter &&
+                  !_stopGatherCompleter.isCompleted)
+                _stopGatherCompleter.completeError(errorResponse);
+              if (null != _stopTrackCompleter &&
+                  !_stopTrackCompleter.isCompleted)
+                _stopTrackCompleter.completeError(errorResponse);
               break;
             default:
               break;
@@ -159,11 +186,11 @@ class AmapTrack {
 
   int sid;
 
-  Future setServiceId(int serviceId) async {
+  Future initWithServiceId(int serviceId) async {
     assert(null != serviceId && serviceId > 0);
     sid = serviceId;
     if (Platform.isIOS)
-      _methodChannel.invokeListMethod('setServiceId', {'sid': serviceId});
+      _methodChannel.invokeListMethod('initWithServiceId', {'sid': serviceId});
   }
 
   /// 获得版本号
@@ -220,8 +247,10 @@ class AmapTrack {
   }
 
   /// 设置轨迹服务监听器 该接口必须在开启轨迹服务后调用才会生效
+  /// android only
   Future addOnTrackListener() async {
-    await _methodChannel.invokeMethod('addOnTrackListener');
+    if (Platform.isAndroid)
+      await _methodChannel.invokeMethod('addOnTrackListener');
   }
 
   /// 设置轨迹服务监听器 该接口必须在开启轨迹服务后调用才会生效
@@ -250,7 +279,7 @@ class AmapTrack {
     if (null == param.sid) param.sid = sid;
     assert(param.isTerminalValid() && param.isServiceValid());
     _startTrackCompleter = Completer();
-    _methodChannel.invokeMethod('startTrack', {'param': param.toMap()});
+    _methodChannel.invokeMethod('startTrack', param.toMap());
     addOnTrackListener();
     return _startTrackCompleter.future;
   }
@@ -285,20 +314,20 @@ class AmapTrack {
     if (null == param.sid) param.sid = sid;
     assert(param.isTerminalValid() && param.isServiceValid());
     _stopTrackCompleter = Completer();
-    _methodChannel.invokeMethod('stopTrack', {'param': param.toMap()});
+    _methodChannel.invokeMethod('stopTrack', param.toMap());
     addOnTrackListener();
     return _stopTrackCompleter.future;
   }
 
-  Completer<QueryTerminalResponse> _queryTerminalCompleter;
+  Completer<List<QueryTerminalResponse>> _queryTerminalCompleter;
 
   /// 查询terminal
-  Future<QueryTerminalResponse> queryTerminal(
+  Future<List<QueryTerminalResponse>> queryTerminal(
       QueryTerminalRequest request) async {
     assert(null != request);
     if (null == request.sid) request.sid = sid;
     _queryTerminalCompleter = Completer();
-    _methodChannel.invokeMethod('queryTerminal', {'request': request.toMap()});
+    _methodChannel.invokeMethod('queryTerminal', request.toMap());
     return _queryTerminalCompleter.future;
   }
 
@@ -309,7 +338,7 @@ class AmapTrack {
     assert(null != request);
     if (null == request.sid) request.sid = sid;
     _addTerminalCompleter = Completer();
-    _methodChannel.invokeMethod('addTerminal', {'request': request.toMap()});
+    _methodChannel.invokeMethod('addTerminal', request.toMap());
     return _addTerminalCompleter.future;
   }
 
@@ -328,7 +357,7 @@ class AmapTrack {
     assert(null != request);
     if (null == request.sid) request.sid = sid;
     _distanceCompleter = Completer();
-    _methodChannel.invokeMethod('queryDistance', {'request': request.toMap()});
+    _methodChannel.invokeMethod('queryDistance', request.toMap());
     return _distanceCompleter.future;
   }
 
@@ -340,8 +369,7 @@ class AmapTrack {
     assert(null != request);
     if (null == request.sid) request.sid = sid;
     _latestPointCompleter = Completer();
-    _methodChannel
-        .invokeMethod('queryLatestPoint', {'request': request.toMap()});
+    _methodChannel.invokeMethod('queryLatestPoint', request.toMap());
     return _latestPointCompleter.future;
   }
 
@@ -353,8 +381,7 @@ class AmapTrack {
     assert(null != request);
     if (null == request.sid) request.sid = sid;
     _historyTrackCompleter = Completer();
-    _methodChannel
-        .invokeMethod('queryHistoryTrack', {'request': request.toMap()});
+    _methodChannel.invokeMethod('queryHistoryTrack', request.toMap());
     return _historyTrackCompleter.future;
   }
 
@@ -366,8 +393,7 @@ class AmapTrack {
     assert(null != request);
     if (null == request.sid) request.sid = sid;
     _queryTrackCompleter = Completer();
-    _methodChannel
-        .invokeMethod('queryTerminalTrack', {'request': request.toMap()});
+    _methodChannel.invokeMethod('queryTerminalTrack', request.toMap());
     return _queryTrackCompleter.future;
   }
 
@@ -378,26 +404,26 @@ class AmapTrack {
     assert(null != request);
     if (null == request.sid) request.sid = sid;
     _addTrackCompleter = Completer();
-    _methodChannel.invokeMethod('addTrack', {'request': request.toMap()});
+    _methodChannel.invokeMethod('addTrack', request.toMap());
     return _addTrackCompleter.future;
   }
 
-  // todo response
-  Completer<AddTrackResponse> _deleteTrackCompleter;
+  Completer _deleteTrackCompleter;
 
   /// 删除轨迹
   /// iOS only
-  Future<AddTrackResponse> deleteTrack(DeleteTrackRequest request) async {
+  Future deleteTrack(DeleteTrackRequest request) async {
     assert(Platform.isIOS);
     assert(null != request);
     _deleteTrackCompleter = Completer();
-    _methodChannel.invokeMethod('deleteTrack', {'request': request.toMap()});
+    _methodChannel.invokeMethod('deleteTrack', request.toMap());
     return _deleteTrackCompleter.future;
   }
 
   /// 取消所有未回调的请求
   /// ios only
   Future cancelAllRequests() async {
-    await _methodChannel.invokeListMethod('cancelAllRequests');
+    if (Platform.isIOS)
+      await _methodChannel.invokeListMethod('cancelAllRequests');
   }
 }
