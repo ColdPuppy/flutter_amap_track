@@ -14,6 +14,7 @@ class QueryTrackResponse {
       QueryTrackResponse(
           map['count'],
           map['tracks']
-              .map<Track>((t) => Track.parse(Map<String, dynamic>.from(t)))
+              .map<Track>((t) =>
+                  t != null ? Track.parse(Map<String, dynamic>.from(t)) : null)
               .toList());
 }

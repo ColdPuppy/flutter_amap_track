@@ -16,10 +16,17 @@ class HistoryTrack {
 
   factory HistoryTrack.parse(Map<String, dynamic> map) => HistoryTrack(
       map['count'],
-      map['distance'],
-      Point.parse(Map<String, dynamic>.from(map['startPoint'])),
-      Point.parse(Map<String, dynamic>.from(map['endPoint'])),
-      map['points']
-          .map<Point>((p) => Point.parse(Map<String, dynamic>.from(p)))
-          .toList());
+      map['distance'].toDouble(),
+      map['startPoint'] != null
+          ? Point.parse(Map<String, dynamic>.from(map['startPoint']))
+          : null,
+      map['endPoint'] != null
+          ? Point.parse(Map<String, dynamic>.from(map['endPoint']))
+          : null,
+      map['points'] != null
+          ? map['points']
+              .map<Point>((p) =>
+                  p != null ? Point.parse(Map<String, dynamic>.from(p)) : null)
+              .toList()
+          : null);
 }

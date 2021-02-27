@@ -21,5 +21,5 @@ class Point {
       map['accuracy'],
       map['direction'],
       map['height'],
-      Map<String, String>.from(map['props']));
+      map['props'] != null ? Map<String, String>.from(map['props']) : null);
 }

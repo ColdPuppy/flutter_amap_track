@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_amap_track/flutter_amap_track.dart';
 import 'package:flutter_amap_track/model/request/add_track_request.dart';
 import 'package:flutter_amap_track/model/request/track_param.dart';
+import 'package:flutter_amap_track/model/response/error_response.dart';
 
 import 'console_panel.dart';
 
@@ -112,12 +113,19 @@ class _TrackPageState extends State<TrackPage> {
                     ),
                   ),
                   onPressed: () async {
-                    var response = await AmapTrack.getInstance()
-                        .addTrack(AddTrackRequest(tid: 323198284));
-                    trid = response.trid;
-                    setState(() {
-                      consoles.add('addTrack: trid${response.trid}');
-                    });
+                    try {
+                      var response = await AmapTrack.getInstance()
+                          .addTrack(AddTrackRequest(tid: 323198284));
+                      trid = response.trid;
+                      setState(() {
+                        consoles.add('addTrack: trid${response.trid}');
+                      });
+                    } on ErrorResponse catch (e) {
+                      setState(() {
+                        consoles.add(
+                            '${e.errorCode} | ${e.errorMsg} | ${e.errorDetail}');
+                      });
+                    }
                   }),
               Container(height: 5),
               RaisedButton(

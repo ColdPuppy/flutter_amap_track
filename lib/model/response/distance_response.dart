@@ -8,5 +8,5 @@ class DistanceResponse {
   DistanceResponse(this.distance);
 
   factory DistanceResponse.parse(Map<String, dynamic> map) =>
-      DistanceResponse(map['distance']);
+      DistanceResponse(map['distance'].toDouble());
 }

@@ -71,9 +71,13 @@ class AmapTrack {
               break;
             case 'onHistoryTrackCallback':
               if (split.length == 2) {
-                var historyTrackResponse = HistoryTrackResponse.parse(
-                    Map<String, dynamic>.from(call.arguments));
-                _historyTrackCompleter?.complete(historyTrackResponse);
+                try {
+                  var historyTrackResponse = HistoryTrackResponse.parse(
+                      Map<String, dynamic>.from(call.arguments));
+                  _historyTrackCompleter?.complete(historyTrackResponse);
+                } catch (e) {
+                  print(e);
+                }
               } else {
                 var errorResponse = ErrorResponse.parse(
                     Map<String, dynamic>.from(call.arguments));
@@ -82,13 +86,21 @@ class AmapTrack {
               break;
             case 'onQueryTrackCallback':
               if (split.length == 2) {
-                var queryTrackResponse = QueryTrackResponse.parse(
-                    Map<String, dynamic>.from(call.arguments));
-                _queryTrackCompleter?.complete(queryTrackResponse);
+                try {
+                  var queryTrackResponse = QueryTrackResponse.parse(
+                      Map<String, dynamic>.from(call.arguments));
+                  _queryTrackCompleter?.complete(queryTrackResponse);
+                } catch (e) {
+                  print(e);
+                }
               } else {
-                var errorResponse = ErrorResponse.parse(
-                    Map<String, dynamic>.from(call.arguments));
-                _queryTrackCompleter?.completeError(errorResponse);
+                try {
+                  var errorResponse = ErrorResponse.parse(
+                      Map<String, dynamic>.from(call.arguments));
+                  _queryTrackCompleter?.completeError(errorResponse);
+                } catch (e) {
+                  print(e);
+                }
               }
               break;
             case 'onAddTrackCallback':

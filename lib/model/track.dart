@@ -21,12 +21,17 @@ class Track {
 
   factory Track.parse(Map<String, dynamic> map) => Track(
       map['count'],
-      map['distance'],
+      map['distance'].toDouble(),
       map['trid'],
-      Point.parse(Map<String, dynamic>.from(map['startPoint'])),
-      Point.parse(Map<String, dynamic>.from(map['endPoint'])),
+      map['startPoint'] != null
+          ? Point.parse(Map<String, dynamic>.from(map['startPoint']))
+          : null,
+      map['endPoint'] != null
+          ? Point.parse(Map<String, dynamic>.from(map['endPoint']))
+          : null,
       map['points']
-          .map<Point>((p) => Point.parse(Map<String, dynamic>.from(p)))
+          .map<Point>((p) =>
+              p != null ? Point.parse(Map<String, dynamic>.from(p)) : null)
           .toList(),
       lastingTime: map['lastingTime']);
 }

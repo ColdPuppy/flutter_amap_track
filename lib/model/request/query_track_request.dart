@@ -10,15 +10,20 @@ class QueryTrackRequest {
   int startTime;
   int endTime;
   int trid;
-  int denoise;
-  int mapmatch;
-  int threshold;
-  int drivemode;
   int recoup;
   int gap;
   int ispoint;
   int page;
   int pageSize;
+
+  /// android only
+  int denoise;
+  int mapmatch;
+  int threshold;
+  int drivemode;
+
+  /// ios only
+  int correction;
 
   QueryTrackRequest(
       {this.sid,
@@ -30,6 +35,7 @@ class QueryTrackRequest {
       this.mapmatch,
       this.threshold,
       this.drivemode,
+      this.correction,
       this.recoup,
       this.gap,
       this.ispoint,
@@ -46,6 +52,7 @@ class QueryTrackRequest {
         'mapmatch': mapmatch,
         'threshold': threshold,
         'drivemode': drivemode,
+        'correction': correction,
         'recoup': recoup,
         'gap': gap,
         'ispoint': ispoint,

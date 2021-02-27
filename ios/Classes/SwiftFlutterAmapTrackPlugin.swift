@@ -342,7 +342,7 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
             request.endTime = endTime!
         }
         
-        var correctionMode = "n"
+        var correctionMode = ""
         if correction != nil && correction == 1 {
             correctionMode = "driving"
         }
@@ -354,7 +354,9 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
             request.recoupMode = AMapTrackRecoupMode.none
         }
         
-        request.recoupGap = UInt(gap!)
+        if gap != nil {
+            request.recoupGap = UInt(gap!)
+        }
         
         if ispoint != nil {
             request.containPoints = ispoint!
@@ -383,7 +385,6 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
     let lifecycleTag = "OnTrackLifecycleListener"
     
     public func amapTrackManager(_ manager: AMapTrackManager, doRequireTemporaryFullAccuracyAuth locationManager: CLLocationManager, completion: @escaping (Error) -> Void) {
-        print("amapTrackManager")
         locationManager.requestAlwaysAuthorization()
     }
     
@@ -504,9 +505,11 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
             var resultData = [String: Any]()
             if response.code == AMapTrackErrorCode.OK {
                 resultData["count"] = response.counts
-                var trackList = [[String: Any?]]()
-                for track in response.tracks {
-                    trackList.append(convertTrack(track: track))
+                var trackList = [Any]()
+                if response.tracks != nil {
+                    for track in response.tracks {
+                        trackList.append(convertTrack(track: track))
+                    }
                 }
                 resultData["tracks"] = trackList
                 SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(trackTag + "#onQueryTrackCallback", arguments: resultData)
@@ -518,46 +521,57 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
             }
     }
     
-    func convertTrack(track: AMapTrackBasicTrack) -> [String: Any?] {
+    func convertTrack(track: AMapTrackBasicTrack?) -> Any {
+        if track == nil {
+            return NSNull()
+        }
         var dict = [String: Any?]()
-        dict["count"] = track.counts
-        dict["distance"] = track.distance
-        dict["trid"] = Int(track.trackID)
-        dict["startPoint"] = convertPoint(point: track.startPoint)
-        dict["endPoint"] = convertPoint(point: track.endPoint)
-        var pList = [[String: Any?]]()
-        for p in track.points {
+        dict["count"] = track!.counts
+        dict["distance"] = track!.distance
+        dict["trid"] = Int(track!.trackID)
+        dict["startPoint"] = convertPoint(point: track!.startPoint)
+        dict["endPoint"] = convertPoint(point: track!.endPoint)
+        var pList = [Any]()
+        for p in track!.points {
             pList.append(convertPoint(point: p))
         }
         dict["points"] = pList
-        dict["lastingTime"] = track.lastingTime
+        dict["lastingTime"] = track!.lastingTime
         
         return dict
     }
     
-    func convertHistoryTrack(track: AMapTrackQueryTrackHistoryAndDistanceResponse) -> [String:Any?] {
+    func convertHistoryTrack(track: AMapTrackQueryTrackHistoryAndDistanceResponse?) -> Any {
+        if track == nil {
+            return NSNull()
+        }
         var dict = [String: Any?]()
-        dict["count"] = track.count
-        dict["distance"] = track.distance
-        dict["startPoint"] = convertPoint(point: track.startPoint)
-        dict["endPoint"] = convertPoint(point: track.endPoint)
-        var pList = [[String: Any?]]()
-        for p in track.points {
-            pList.append(convertPoint(point: p))
+        dict["count"] = track!.count
+        dict["distance"] = track!.distance
+        dict["startPoint"] = convertPoint(point: track!.startPoint)
+        dict["endPoint"] = convertPoint(point: track!.endPoint)
+        var pList = [Any]()
+        if track!.points != nil {
+            for p in track!.points {
+                pList.append(convertPoint(point: p))
+            }
         }
         dict["points"] = pList
         
         return dict
     }
     
-    func convertPoint(point: AMapTrackPoint) -> [String: Any?] {
+    func convertPoint(point: AMapTrackPoint?) -> Any {
+        if point == nil {
+            return NSNull()
+        }
         var dict = [String: Any?]()
-        dict["lat"] = point.coordinate.latitude
-        dict["lng"] = point.coordinate.longitude
-        dict["time"] = point.locateTime
-        dict["accuracy"] = point.accuracy
-        dict["direction"] = point.direction
-        dict["height"] = point.height
+        dict["lat"] = point!.coordinate.latitude
+        dict["lng"] = point!.coordinate.longitude
+        dict["time"] = point!.locateTime
+        dict["accuracy"] = point!.accuracy
+        dict["direction"] = point!.direction
+        dict["height"] = point!.height
         return dict
     }
     
@@ -566,9 +580,9 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
     public func onStartService(_ errorCode: AMapTrackErrorCode) {
         var resultData = [String: Any]()
         if errorCode == AMapTrackErrorCode.OK {
-            resultData["status"] = errorCode
+            resultData["status"] = errorCode.rawValue
             resultData["message"] = "轨迹同步 启动成功"
-            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStartTrackCallback", arguments: nil)
+            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStartTrackCallback", arguments: resultData)
         }else {
             resultData["errorCode"] = errorCode.rawValue
             SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(trackTag + "#onParamErrorCallback#error", arguments: resultData)
@@ -578,11 +592,11 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
     public func onStopService(_ errorCode: AMapTrackErrorCode) {
         var resultData = [String: Any]()
         if errorCode == AMapTrackErrorCode.OK {
-            resultData["status"] = errorCode
+            resultData["status"] = errorCode.rawValue
             resultData["message"] = "轨迹同步 停止成功"
-            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStopTrackCallback", arguments: nil)
+            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStopTrackCallback", arguments: resultData)
         }else {
-            resultData["errorCode"] = errorCode
+            resultData["errorCode"] = errorCode.rawValue
             SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(trackTag + "#onParamErrorCallback#error", arguments: resultData)
         }
     }
@@ -590,11 +604,11 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
     public func onStartGatherAndPack(_ errorCode: AMapTrackErrorCode) {
         var resultData = [String: Any]()
         if errorCode == AMapTrackErrorCode.OK {
-            resultData["status"] = errorCode
+            resultData["status"] = errorCode.rawValue
             resultData["message"] = "定位采集 启动成功"
-            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStartGatherCallback", arguments: nil)
+            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStartGatherCallback", arguments: resultData)
         }else {
-            resultData["errorCode"] = errorCode
+            resultData["errorCode"] = errorCode.rawValue
             SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(trackTag + "#onParamErrorCallback#error", arguments: resultData)
         }
     }
@@ -602,11 +616,11 @@ public class SwiftFlutterAmapTrackPlugin: NSObject, FlutterPlugin, AMapTrackMana
     public func onStopGatherAndPack(_ errorCode: AMapTrackErrorCode, errorMessage: String?) {
         var resultData = [String: Any]()
         if errorCode == AMapTrackErrorCode.OK {
-            resultData["status"] = errorCode
+            resultData["status"] = errorCode.rawValue
             resultData["message"] = "定位采集 停止成功"
-            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStopGatherCallback", arguments: nil)
+            SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(lifecycleTag + "#onStopGatherCallback", arguments: resultData)
         }else {
-            resultData["errorCode"] = errorCode
+            resultData["errorCode"] = errorCode.rawValue
             resultData["errorMsg"] = errorMessage
             SwiftFlutterAmapTrackPlugin.channel?.invokeMethod(trackTag + "#onParamErrorCallback#error", arguments: resultData)
         }
