@@ -3,8 +3,10 @@
 [![pub 
 package](https://img.shields.io/pub/v/flutter_amap_track.svg)](https://pub.dartlang.org/packages/flutter_amap_track)
 
-高德猎鹰Api的搬运和实现
+本插件为高德猎鹰Api的搬运和实现
+
 [Android猎鹰文档](https://developer.amap.com/api/android-track/summary)
+
 [iOS猎鹰文档](https://developer.amap.com/api/ios-track/summary/)
 
 ### Android
@@ -25,12 +27,18 @@ package](https://img.shields.io/pub/v/flutter_amap_track.svg)](https://pub.dartl
 
 ### iOS
 
-todo
+#### 更改info.plist 及 配置后台定位
+在info.plist的字段添加定位权限的申请及配置后台定位能力，配置方式请参考[iOS 猎鹰SDK 手动部署](https://developer.amap.com/api/ios-track/guide/create-project/manual-configuration)部分说明
+
+#### 设置apikey
+```
+AmapTrack.getInstance().setIOSApiKey('xxx');
+```
 
 ### 使用
-#### 全局设置serviceId
+#### 全局设置serviceId并初始化猎鹰组件
 ``` dart
-    AmapTrack.getInstance().setServiceId(xxx);
+    AmapTrack.getInstance().initWithServiceId(xxx);
 ```
 
 #### 终端管理
@@ -96,3 +104,8 @@ var historyTrackResponse = await AmapTrack.getInstance().queryHistoryTrack(Histo
 ``` dart
 var queryTrackResponse = await AmapTrack.getInstance().queryTerminalTrack(QueryTrackRequest(...));
 ```
+
+
+* * *
+
+## 本插件API更多参考的是官方Android猎鹰API，兼容了iOS部分，更多api及参数可前往官网查询
