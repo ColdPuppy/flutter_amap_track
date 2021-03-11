@@ -6,3 +6,6 @@ support android
 
 ## 0.0.3
 support iOS
+
+## 0.1.0
+migrate to null safety
