@@ -5,18 +5,14 @@ import 'package:flutter/cupertino.dart';
 /// @mail coldpuppy@163.com
 
 class LatestPointRequest {
-  int sid;
+  int? sid;
   int tid;
-  int trid;
-  int correction;
-  String accuracy;
+  int? trid;
+  int? correction;
+  String? accuracy;
 
   LatestPointRequest(
-      {this.sid,
-      @required this.tid,
-      this.trid,
-      this.correction,
-      this.accuracy});
+      {this.sid, required this.tid, this.trid, this.correction, this.accuracy});
 
   Map<String, dynamic> toMap() => {
         'sid': sid,

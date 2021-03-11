@@ -32,7 +32,7 @@ class _QueryPageState extends State<QueryPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -51,7 +51,7 @@ class _QueryPageState extends State<QueryPage> {
                     });
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -74,7 +74,7 @@ class _QueryPageState extends State<QueryPage> {
                     });
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -109,7 +109,7 @@ class _QueryPageState extends State<QueryPage> {
                     }
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,

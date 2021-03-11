@@ -6,16 +6,26 @@ class QueryTerminalResponse {
   int tid;
 
   /// android only
-  bool isTerminalExist;
+  bool? isTerminalExist;
 
   /// ios only
-  String name;
-  String desc;
-  int createTime;
-  int locateTime;
+  String? name;
+  String? desc;
+  int? createTime;
+  int? locateTime;
 
-  QueryTerminalResponse(this.tid, this.isTerminalExist);
+  QueryTerminalResponse(this.tid,
+      {this.isTerminalExist,
+      this.name,
+      this.desc,
+      this.createTime,
+      this.locateTime});
 
   factory QueryTerminalResponse.parse(Map<String, dynamic> map) =>
-      QueryTerminalResponse(map['tid'], map['isTerminalExist']);
+      QueryTerminalResponse(map['tid'],
+          isTerminalExist: map['isTerminalExist'],
+          name: map['name'],
+          desc: map['desc'],
+          createTime: map['createTime'],
+          locateTime: map['locateTime']);
 }

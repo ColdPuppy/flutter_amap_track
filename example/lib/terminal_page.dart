@@ -34,7 +34,7 @@ class _TerminalPageState extends State<TerminalPage> {
                   controller: _controller,
                   decoration: InputDecoration(hintText: '终端名称')),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -51,12 +51,12 @@ class _TerminalPageState extends State<TerminalPage> {
                             .queryTerminal(QueryTerminalRequest(
                                 terminal: _controller.text));
                         if (response.length > 0)
-                          setState(() {
-                            consoles.add(
-                                'tid:${response[0].tid} | isTerminalExist:${response[0].isTerminalExist}');
-                          });
+                          consoles.add(
+                              'tid:${response[0].tid} | isTerminalExist:${response[0].isTerminalExist}');
                         else
                           consoles.add('no result');
+
+                        setState(() {});
                       } on ErrorResponse catch (e) {
                         setState(() {
                           consoles.add(
@@ -66,7 +66,7 @@ class _TerminalPageState extends State<TerminalPage> {
                     }
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,

@@ -8,12 +8,12 @@ class Track {
   int count;
   double distance;
   int trid;
-  Point startPoint;
-  Point endPoint;
+  Point? startPoint;
+  Point? endPoint;
   List<Point> points;
 
   /// iOS only
-  int lastingTime;
+  int? lastingTime;
 
   Track(this.count, this.distance, this.trid, this.startPoint, this.endPoint,
       this.points,

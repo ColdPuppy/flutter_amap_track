@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 /// @mail coldpuppy@163.com
 
 class AddTrackRequest {
-  int sid;
+  int? sid;
   int tid;
 
-  AddTrackRequest({this.sid, @required this.tid});
+  AddTrackRequest({this.sid, required this.tid});
 
   Map<String, dynamic> toMap() => {'sid': sid, 'tid': tid};
 }

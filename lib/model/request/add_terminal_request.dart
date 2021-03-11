@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 /// @mail coldpuppy@163.com
 
 class AddTerminalRequest {
-  int sid;
+  int? sid;
   String terminal;
 
   /// iOS only
-  String terminalDesc;
+  String? terminalDesc;
 
-  AddTerminalRequest({this.sid, @required this.terminal, this.terminalDesc});
+  AddTerminalRequest({this.sid, required this.terminal, this.terminalDesc});
 
   Map<String, dynamic> toMap() =>
       {'sid': sid, 'terminal': terminal, 'terminalDesc': terminalDesc};

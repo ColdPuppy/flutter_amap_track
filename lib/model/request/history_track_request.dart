@@ -5,23 +5,23 @@ import 'package:flutter/cupertino.dart';
 /// @mail coldpuppy@163.com
 
 class HistoryTrackRequest {
-  int sid;
+  int? sid;
   int tid;
   int startTime;
   int endTime;
-  int correction;
-  int recoup;
-  int gap;
-  int order;
-  int page;
-  int pageSize;
-  String accuracy;
+  int? correction;
+  int? recoup;
+  int? gap;
+  int? order;
+  int? page;
+  int? pageSize;
+  String? accuracy;
 
   HistoryTrackRequest(
       {this.sid,
-      @required this.tid,
-      @required this.startTime,
-      @required this.endTime,
+      required this.tid,
+      required this.startTime,
+      required this.endTime,
       this.correction,
       this.recoup,
       this.gap = 5000,

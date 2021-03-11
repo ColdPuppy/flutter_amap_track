@@ -5,21 +5,21 @@ import 'package:flutter/cupertino.dart';
 /// @mail coldpuppy@163.com
 
 class DistanceRequest {
-  int sid;
+  int? sid;
   int tid;
   int startTime;
   int endTime;
   int trid;
-  int correction;
-  int recoup;
-  int gap;
+  int? correction;
+  int? recoup;
+  int? gap;
 
   DistanceRequest(
       {this.sid,
-      @required this.tid,
-      @required this.startTime,
-      @required this.endTime,
-      @required this.trid,
+      required this.tid,
+      required this.startTime,
+      required this.endTime,
+      required this.trid,
       this.correction,
       this.recoup,
       this.gap = 5000});

@@ -5,31 +5,31 @@ import 'package:flutter/cupertino.dart';
 /// @mail coldpuppy@163.com
 
 class QueryTrackRequest {
-  int sid;
+  int? sid;
   int tid;
   int startTime;
   int endTime;
-  int trid;
-  int recoup;
-  int gap;
-  int ispoint;
-  int page;
-  int pageSize;
+  int? trid;
+  int? recoup;
+  int? gap;
+  int? ispoint;
+  int? page;
+  int? pageSize;
 
   /// android only
-  int denoise;
-  int mapmatch;
-  int threshold;
-  int drivemode;
+  int? denoise;
+  int? mapmatch;
+  int? threshold;
+  int? drivemode;
 
   /// ios only
-  int correction;
+  int? correction;
 
   QueryTrackRequest(
       {this.sid,
-      @required this.tid,
-      @required this.startTime,
-      @required this.endTime,
+      required this.tid,
+      required this.startTime,
+      required this.endTime,
       this.trid,
       this.denoise,
       this.mapmatch,

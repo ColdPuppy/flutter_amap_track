@@ -8,7 +8,7 @@ class DeleteTrackRequest {
   int tid;
   int trid;
 
-  DeleteTrackRequest({@required this.tid, @required this.trid});
+  DeleteTrackRequest({required this.tid, required this.trid});
 
   Map<String, dynamic> toMap() => {'tid': tid, 'trid': trid};
 }

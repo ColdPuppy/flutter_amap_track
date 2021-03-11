@@ -7,8 +7,8 @@ import 'package:flutter_amap_track/model/point.dart';
 class HistoryTrack {
   int count;
   double distance;
-  Point startPoint;
-  Point endPoint;
+  Point? startPoint;
+  Point? endPoint;
   List<Point> points;
 
   HistoryTrack(

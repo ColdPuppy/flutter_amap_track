@@ -28,7 +28,7 @@ class _TrackPageState extends State<TrackPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -47,7 +47,7 @@ class _TrackPageState extends State<TrackPage> {
                     });
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -65,7 +65,7 @@ class _TrackPageState extends State<TrackPage> {
                     });
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -83,7 +83,7 @@ class _TrackPageState extends State<TrackPage> {
                     });
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -102,7 +102,7 @@ class _TrackPageState extends State<TrackPage> {
                     });
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -128,7 +128,7 @@ class _TrackPageState extends State<TrackPage> {
                     }
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,
@@ -153,7 +153,7 @@ class _TrackPageState extends State<TrackPage> {
                     });
                   }),
               Container(height: 5),
-              RaisedButton(
+              ElevatedButton(
                   child: Container(
                     width: double.infinity,
                     height: 40,

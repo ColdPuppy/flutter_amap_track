@@ -5,15 +5,15 @@ import 'package:flutter/cupertino.dart';
 /// @mail coldpuppy@163.com
 
 class TrackParam {
-  int sid;
+  int? sid;
   int tid;
-  int trackId;
+  int? trackId;
 
-  TrackParam({this.sid, @required this.tid, this.trackId});
+  TrackParam({this.sid, required this.tid, this.trackId});
 
-  bool isServiceValid() => sid > 0;
+  bool isServiceValid() => null != sid && sid! > 0;
 
   bool isTerminalValid() => tid > 0;
 
-  Map<String, int> toMap() => {'sid': sid, 'tid': tid, 'trackId': trackId};
+  Map<String, int?> toMap() => {'sid': sid, 'tid': tid, 'trackId': trackId};
 }

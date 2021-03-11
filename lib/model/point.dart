@@ -9,7 +9,7 @@ class Point {
   double accuracy;
   double direction;
   double height;
-  Map<String, String> props;
+  Map<String, String>? props;
 
   Point(this.lat, this.lng, this.time, this.accuracy, this.direction,
       this.height, this.props);
